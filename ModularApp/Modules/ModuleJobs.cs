@@ -1,8 +1,12 @@
+using ModularApp.Objects;
+
 namespace ModularApp.Modules;
 
-class ModuleTasks : IRunnable
+class ModuleJobs : IRunnable
 {
     public static string Name = "Aufgaben";
+
+    public static List<Job> Jobs = [];
 
     public int Run()
     {
