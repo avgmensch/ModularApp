@@ -16,4 +16,20 @@ interface IObject
     /// Display name of the object.
     /// </summary>
     string Name { get; set; }
+
+    /// <summary>
+    /// Check of the object matches the <paramref name="query"/>.
+    /// </summary>
+    /// <param name="query">
+    /// Search text.
+    /// </param>
+    bool DoesMatchSearchString(string query);
+
+    /// <summary>
+    /// Opens the editor of an object.
+    /// </summary>
+    /// <returns>
+    /// Exit code of the editor.
+    /// </returns>
+    int OpenEditor();
 }

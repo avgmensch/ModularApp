@@ -1,5 +1,4 @@
 ﻿using ModularApp.Modules;
-using ModularApp.Objects;
 using ModularApp.Utilities;
 
 namespace ModularApp;
@@ -10,7 +9,11 @@ class Program
     {
         Console.Clear();
 
-        ModuleJobs.Jobs.AddRange([
+        ModuleContacts moduleContacts = new();
+
+        ModuleJobs moduleJobs = new();
+
+        moduleJobs.Jobs.AddRange([
             new("2508-001", "Einkaufsliste schreiben", "Erstelle eine Liste mit den wichtigsten Lebensmitteln, die du diese Woche brauchst."),
             new("2508-002", "5-Minuten-Meditation", "Setze dich ruhig hin, atme tief durch und konzentriere dich für fünf Minuten nur auf deinen Atem."),
             new("2508-003", "E-Mail aufräumen", "Lösche oder archiviere alte E-Mails, die du nicht mehr brauchst."),
@@ -23,14 +26,27 @@ class Program
             new("2508-010", "To-do-Liste für morgen schreiben", "Plane kurz den nächsten Tag, um strukturierter zu starten.")
         ]);
 
-        Dictionary<string, IRunnable> modules = new()
+        Dictionary<string, IModule> modules = new()
         {
-            { ModuleContacts.Name, new ModuleContacts() },
-            { ModuleJobs.Name, new ModuleJobs() }
+            { ModuleContacts.Name, moduleContacts },
+            { ModuleJobs.Name, moduleJobs }
         };
 
-        IRunnable selectedModule = Selector.SelectValue("Bitte wählen Sie ein Modul aus.", modules);
+        var (selectedModule, selectedAction) = Selector.SelectValue("Bitte wählen Sie ein Modul aus.", modules, true, true, false);
 
-        selectedModule.Run();
+        if (selectedModule is not null)
+        {
+            selectedModule.Run();
+        }
+        else if (selectedAction is not null)
+        {
+            Console.WriteLine(selectedAction);
+
+            if (selectedAction == MetaAction.Quit)
+            {
+                Console.WriteLine("Quitting application.");
+                Environment.Exit(0);
+            }
+        }
     }
 }

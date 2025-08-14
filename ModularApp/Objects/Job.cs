@@ -49,4 +49,14 @@ class Job : IObject
         Name = name;
         Description = description;
     }
+
+    public bool DoesMatchSearchString(string query)
+    {
+        throw new NotImplementedException();
+    }
+
+    public int OpenEditor()
+    {
+        throw new NotImplementedException();
+    }
 }
