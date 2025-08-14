@@ -1,4 +1,5 @@
-﻿using ModularApp.Modules;
+﻿using ModularApp.Interfaces;
+using ModularApp.Modules;
 using ModularApp.Utilities;
 
 namespace ModularApp;
@@ -32,20 +33,20 @@ class Program
             { ModuleJobs.Name, moduleJobs }
         };
 
-        var (selectedModule, selectedAction) = Selector.SelectValue("Bitte wählen Sie ein Modul aus.", modules, true, true, false);
-
-        if (selectedModule is not null)
+        while (true)
         {
-            selectedModule.Run();
-        }
-        else if (selectedAction is not null)
-        {
-            Console.WriteLine(selectedAction);
+            var (selectedModule, selectedAction) = Selector.SelectValue("Bitte wählen Sie ein Modul aus.", modules, true, true, false);
 
-            if (selectedAction == MetaAction.Quit)
+            if (selectedModule is not null)
             {
-                Console.WriteLine("Quitting application.");
-                Environment.Exit(0);
+                selectedModule.Run();
+            }
+            else if (selectedAction is not null)
+            {
+                if (selectedAction == MetaAction.Quit)
+                {
+                    Environment.Exit(0);
+                }
             }
         }
     }

@@ -1,6 +1,6 @@
-namespace ModularApp.Modules;
+namespace ModularApp.Interfaces;
 
-interface IModule
+interface IModule : IFilterable
 {
     /// <summary>
     /// Execute some action.
@@ -18,5 +18,5 @@ interface IModule
     /// <summary>
     /// Get the line text in the editor selection list.
     /// </summary>
-    IEnumerable<string> GetListText();
+    Dictionary<string, IObject> GetListMapping();
 }

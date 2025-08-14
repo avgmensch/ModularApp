@@ -1,3 +1,5 @@
+using ModularApp.Interfaces;
+
 namespace ModularApp.Objects;
 
 class Job : IObject
@@ -52,11 +54,14 @@ class Job : IObject
 
     public bool DoesMatchSearchString(string query)
     {
-        throw new NotImplementedException();
+        List<string> searchFields = [Number, CreatedOn.ToString(), Name, Description, Finished.ToString()];
+        if (FinishedOn is not null) searchFields.Add(FinishedOn.ToString() ?? string.Empty);
+        return searchFields.Any(field => field.Contains(query, StringComparison.InvariantCultureIgnoreCase));
     }
 
     public int OpenEditor()
     {
+        Console.WriteLine($"Editor geöffnet: {Number} | {Name}");
         throw new NotImplementedException();
     }
 }

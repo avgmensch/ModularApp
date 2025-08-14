@@ -1,4 +1,6 @@
+using ModularApp.Interfaces;
 using ModularApp.Objects;
+using ModularApp.Utilities;
 
 namespace ModularApp.Modules;
 
@@ -8,19 +10,39 @@ class ModuleJobs : IModule
 
     public List<Job> Jobs = [];
 
+    public bool DoesMatchSearchString(string query)
+    {
+        return Name.Contains(query, StringComparison.InvariantCultureIgnoreCase);
+    }
+
     public int Run()
     {
-        Console.WriteLine($"Modul geladen: {Name}");
-        throw new NotImplementedException();
+        while (true)
+        {
+            var (selectedObject, selectedAction) = Selector.SelectValue(GetListCaption(), GetListMapping(), false, false, true);
+
+            if (selectedObject is not null)
+            {
+                selectedObject.OpenEditor();
+            }
+            else if (selectedAction is not null)
+            {
+                switch (selectedAction)
+                {
+                    case MetaAction.Back:
+                        return 0;
+                }
+            }
+        }
     }
 
     public string GetListCaption()
     {
-        throw new NotImplementedException();
+        return "Caption";
     }
 
-    public IEnumerable<string> GetListText()
+    public Dictionary<string, IObject> GetListMapping()
     {
-        throw new NotImplementedException();
+        return Jobs.ToDictionary(job => $"{job.Number} | {job.Name}", job => (IObject)job);
     }
 }

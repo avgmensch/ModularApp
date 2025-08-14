@@ -1,6 +1,6 @@
-namespace ModularApp.Objects;
+namespace ModularApp.Interfaces;
 
-interface IObject
+interface IObject : IFilterable
 {
     /// <summary>
     /// Number of the object (should be unique per type).
@@ -16,14 +16,6 @@ interface IObject
     /// Display name of the object.
     /// </summary>
     string Name { get; set; }
-
-    /// <summary>
-    /// Check of the object matches the <paramref name="query"/>.
-    /// </summary>
-    /// <param name="query">
-    /// Search text.
-    /// </param>
-    bool DoesMatchSearchString(string query);
 
     /// <summary>
     /// Opens the editor of an object.

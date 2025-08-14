@@ -1,8 +1,16 @@
+using ModularApp.Interfaces;
+
 namespace ModularApp.Utilities;
 
 static class Selector
 {
-    public static Tuple<TValue?, MetaAction?> SelectValue<TValue>(string prompt, Dictionary<string, TValue> options, bool showNumber = true, bool enableQuit = false, bool enableBack = false)
+    public static Tuple<TValue?, MetaAction?> SelectValue<TValue>(
+        string prompt,
+        Dictionary<string, TValue> options,
+        bool showNumber = true,
+        bool enableQuit = false,
+        bool enableBack = false
+    ) where TValue : IFilterable
     {
         // TODO: Take height limit of the console into account.
 
@@ -16,7 +24,7 @@ static class Selector
             Console.WriteLine(prompt);
 
             filteredOptions = options
-                .Where(pair => pair.Key.Contains(searchTerm, StringComparison.InvariantCultureIgnoreCase))
+                .Where(pair => pair.Value.DoesMatchSearchString(searchTerm))
                 .ToDictionary(pair => pair.Key, pair => pair.Value);
 
             int keyIndex = 0;
@@ -48,7 +56,7 @@ static class Selector
             {
                 selectedIndex--;
             }
-            else if (keyDown == ConsoleKey.DownArrow && selectedIndex < options.Count - 1)
+            else if (keyDown == ConsoleKey.DownArrow && selectedIndex < filteredOptions.Count - 1)
             {
                 selectedIndex++;
             }
@@ -57,7 +65,7 @@ static class Selector
                 searchTerm = searchTerm[..^1];
                 selectedIndex = 0;
             }
-            else if (char.IsLetterOrDigit(keyDownInfo.KeyChar))
+            else if (char.IsLetterOrDigit(keyDownInfo.KeyChar) || char.IsPunctuation(keyDownInfo.KeyChar))
             {
                 searchTerm += keyDownInfo.KeyChar;
                 selectedIndex = 0;
